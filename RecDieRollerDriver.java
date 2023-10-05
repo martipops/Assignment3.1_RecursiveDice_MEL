@@ -20,7 +20,9 @@ public class RecDieRollerDriver {
     public static void main(String[] args) throws Exception {
         int[] rolls = rollMultiple(1000);
         String rollsToString = Arrays.toString(rolls); 
-        System.out.println(rollsToString);
+        double average = calculateAverage(rolls);
+        System.out.println("Rolls List: " + rollsToString);
+        System.out.println("Rolls Average: " + average);
     }
 
     /**
@@ -30,10 +32,21 @@ public class RecDieRollerDriver {
      * @return An array containing a list of how many rolls it took for each iteration
      */
     public static int[] rollMultiple(int iterations) {
-        int[] rollCounts = new int[iterations];
-        for (int i = 0; i < iterations; i++) {
-            rollCounts[i] = RecDieRoller.recRoll();
-        }
-        return rollCounts;
+        // I'm trying to learn the java stream API
+        return Arrays.stream(new int[iterations])
+                .map(i -> RecDieRoller.recRoll())
+                .toArray();
+    }
+
+    /**
+     * Calculates the average of a list of roll counts
+     * 
+     * @param rollCounts The list of rolls
+     * @return The average of the all of the rolls
+     */
+    public static double calculateAverage(int[] rollCounts) {
+        return Arrays.stream(rollCounts)
+                .average()
+                .orElse(0.0);
     }
 }
